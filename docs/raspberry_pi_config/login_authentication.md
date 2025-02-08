@@ -1,5 +1,7 @@
 # Login Authentication for Raspberry Pi 4 Model B 
 
+### Seul l'accès via micro-HDMI est activé sur la Raspberry Pi, ce document vous permet de configurer correctement l'accès au terminal.
+
 1. Retirer l'interface graphique et les différents TTY (TeleTYpewriter)
 
 ```bash
@@ -12,6 +14,8 @@ sudo systemctl set-default multi-user.target
 # Redémarre la Raspberry Pi
 sudo reboot
 ```
+
+Le tty7 devrait être indisponible.
 
 2. Configurer l'interface tty1 en mode CLI uniquement
 
