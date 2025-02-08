@@ -46,7 +46,7 @@ sudo systemctl daemon-reload
 sudo reboot
 ```
 
-## Dans cette configuration, dès la mise sous tension de la Raspberry Pi, l'interface tty1 sera automatiquement configurer en mode CLI et demandant le mot de passe de l'utilisateur 'username' pour acceder au terminal.
+## Dans cette configuration, dès la mise sous tension de la Raspberry Pi, l'interface tty1 sera automatiquement configurée en mode CLI et demandant le mot de passe de l'utilisateur 'username' pour acceder au terminal.
 
 
 
