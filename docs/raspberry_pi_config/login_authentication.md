@@ -8,6 +8,19 @@
 sudo systemctl disable lightdm
 sudo systemctl stop lightdm
 
+sudo systemctl disable getty@tty2
+sudo systemctl disable getty@tty3
+sudo systemctl disable getty@tty4
+sudo systemctl disable getty@tty5
+sudo systemctl disable getty@tty6
+
+sudo systemctl stop getty@tty2
+sudo systemctl stop getty@tty3
+sudo systemctl stop getty@tty4
+sudo systemctl stop getty@tty5
+sudo systemctl stop getty@tty6
+
+
 # Vérifier que la Raspberry Pi démarre bien en mode console (CLI)
 sudo systemctl set-default multi-user.target
 
@@ -15,7 +28,7 @@ sudo systemctl set-default multi-user.target
 sudo reboot
 ```
 
-Le tty7 devrait être indisponible.
+Le tty2 à 7 devrait être indisponible.
 
 2. Configurer l'interface tty1 en mode CLI uniquement
 
