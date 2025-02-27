@@ -20,6 +20,13 @@ sudo systemctl stop getty@tty4
 sudo systemctl stop getty@tty5
 sudo systemctl stop getty@tty6
 
+sudo nano /etc/systemd/logind.conf
+
+NAutoVTs=1
+ReserveVT=1
+
+sudo systemctl daemon-reexec
+
 
 # Vérifier que la Raspberry Pi démarre bien en mode console (CLI)
 sudo systemctl set-default multi-user.target
@@ -63,6 +70,24 @@ sudo reboot
 
 ### Dans notre cas précis, l'authentification via Yubikey est activée, ce qui permet de se connecter sans mot de passe et uniquement en touchant la YubiKey. 
 
+
+3. Mettre en place l'auth via Yubi
+
+Suivre ce tuto: https://sysadmin102.com/2023/07/enable-2-factor-authentication-2fa-or-passwordless-on-kali-linux-with-the-yubikey/
+
+Modifier ce fichier:
+
+```bash
+sudo vim /etc/pam.d/login 
+```
+
+Ajouter cette ligne:
+
+auth required pam_u2f.so cue [cue_prompt="Tap the YubiKey to authenticate"]
+
+Mettre en commentaire la ligne suivante (située juste en dessous): 
+
+#@include common-auth
 
 
 
