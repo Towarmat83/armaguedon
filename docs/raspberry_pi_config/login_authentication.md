@@ -8,25 +8,12 @@
 sudo systemctl disable lightdm
 sudo systemctl stop lightdm
 
-sudo systemctl disable getty@tty2
-sudo systemctl disable getty@tty3
-sudo systemctl disable getty@tty4
-sudo systemctl disable getty@tty5
-sudo systemctl disable getty@tty6
-
-sudo systemctl stop getty@tty2
-sudo systemctl stop getty@tty3
-sudo systemctl stop getty@tty4
-sudo systemctl stop getty@tty5
-sudo systemctl stop getty@tty6
-
 sudo nano /etc/systemd/logind.conf
 
 NAutoVTs=1
 ReserveVT=1
 
 sudo systemctl daemon-reexec
-
 
 # Vérifier que la Raspberry Pi démarre bien en mode console (CLI)
 sudo systemctl set-default multi-user.target

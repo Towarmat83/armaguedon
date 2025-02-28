@@ -1,0 +1,10 @@
+[Unit]
+Description=Mount LUKS partition
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/usr/local/bin/luks-mount-service.sh
+
+[Install]
+WantedBy=multi-user.target

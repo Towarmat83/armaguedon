@@ -1,0 +1,20 @@
+[Unit]
+Description=YubiKey LUKS decryption
+DefaultDependencies=no
+After=local-fs.target
+Before=cryptsetup.target
+Wants=cryptsetup.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/auto-yubikey-luks.sh
+ExecStartPost=/bin/bash -c '[ -e /dev/mapper/cryptroot ] && /bin/mount /dev/mapper/cryptroot /mnt'
+ExecStartPost=/bin/bash -c '[ -e /mnt ] && /bin/chown raspi:raspi /mnt'
+StandardOutput=journal
+StandardError=journal
+TimeoutSec=30
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
