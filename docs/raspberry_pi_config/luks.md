@@ -1,9 +1,10 @@
-Flasher la carte micro SD pour avoir un OS Rasp
+# Flasher la carte micro SD pour avoir un OS Rasp
 
-Allouer de la place à rootfs
+# Allouer de la place à rootfs
+Le faire avec l'interface graphique
 
-Créer la partition depuis le pc ops (20Mo) en utilisant LUKS. Se souvenir du mdp de la partition.
-
+# Créer la partition depuis le pc ops (20Mo) en utilisant LUKS. Se souvenir du mdp de la partition.
+Le faire avec l'interface graphique
 
 # Brancher la Rasp
 
@@ -74,5 +75,8 @@ sudo systemctl enable yubikey-luks-cryptroot.service
 
 # Pour mettre à jour le boot
 sudo update-initramfs -u
+
+# Logs
+cat /tmp/luks-mount-service.log
 ```
 
