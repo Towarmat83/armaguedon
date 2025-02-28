@@ -15,7 +15,7 @@ Le faire avec l'interface graphique
 https://quentin.demouliere.eu/sysadmin/2024/12/04/luks-yubi.html
 
 ```bash
-sudo apt install yubikey-luks yubikey-personalization pcscd yubikey-manager vim
+sudo apt install yubikey-luks yubikey-personalization pcscd yubikey-manager vim libpam-u2f -y
 ```
 
 Remplacer le ykluks-keyscript dans `/usr/share/yubikey-luks/ykluks-keyscript`
@@ -80,3 +80,4 @@ sudo update-initramfs -u
 cat /tmp/luks-mount-service.log
 ```
 
+# Suivre login_authentication.md

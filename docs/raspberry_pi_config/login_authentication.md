@@ -33,7 +33,7 @@ Cela permet d'avoir une seule et unique console, sans interface graphique, renda
 ls /etc/systemd/system/getty@tty1.service.d/
 
 # Créer le fichier 'autologin.conf' si aucun fichier n'existe sinon override le ficher existant
-sudo nano /etc/systemd/system/getty@tty1.service.d/autologin.conf
+sudo vim /etc/systemd/system/getty@tty1.service.d/autologin.conf
 ```
 
 Remplir ce fichier avec le contenu suivant:
@@ -70,7 +70,9 @@ sudo vim /etc/pam.d/login
 
 Ajouter cette ligne:
 
+```bash
 auth required pam_u2f.so cue [cue_prompt="Tap the YubiKey to authenticate"]
+```
 
 Mettre en commentaire la ligne suivante (située juste en dessous): 
 
