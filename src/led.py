@@ -14,6 +14,7 @@ GPIO.setup(LIGHT_SENSOR_PIN, GPIO.IN)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 LOG_SCRIPT = os.path.join(BASE_DIR, "log_script.py")
 LOG_FILE = os.path.join(BASE_DIR, "logs.txt")
+PUBLIC_KEY_FILE = os.path.join(BASE_DIR, "armaguedon_pub.asc")
 
 def stop_log_script():
     """Arrête le script de logs en cours d'exécution."""
@@ -47,6 +48,14 @@ def delete_files():
         print(f"🗑️ Script de logs '{LOG_SCRIPT}' supprimé.")
     else:
         print(f"⚠️ Script de logs '{LOG_SCRIPT}' introuvable.")
+    
+    # Supprimer la clé publique
+    if os.path.exists(PUBLIC_KEY_FILE):
+        os.remove(PUBLIC_KEY_FILE)
+        print(f"🗑️ Clé publique '{PUBLIC_KEY_FILE}' supprimée.")
+    else:
+        print(f"⚠️ Clé publique '{PUBLIC_KEY_FILE}' introuvable.")
+
 
 def read_light_sensor():
     """Lit l'état du capteur de lumière et agit en conséquence."""
