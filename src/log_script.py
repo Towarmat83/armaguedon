@@ -11,6 +11,7 @@ gpg = gnupg.GPG(gnupghome=gnupghome)
 # Charger la clé publique
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 KEY_FILE = os.path.join(BASE_DIR, "armaguedon_pub.asc")
+LOG_FILE = os.path.join(BASE_DIR, "logs.txt")
 
 with open(KEY_FILE, "r") as key_file:
     key_data = key_file.read()
@@ -36,7 +37,7 @@ while True:
     if not encrypted_data.ok:
         print(f"❌ Erreur lors du chiffrement : {encrypted_data.stderr}")
     else:
-        with open("logs.txt", "a", encoding="utf-8") as f:
+        with open(LOG_FILE, "a") as f:
             f.write(str(encrypted_data) + "\n")
         print("🔐 Timestamp chiffré et enregistré")
 
