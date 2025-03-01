@@ -1,0 +1,15 @@
+[Unit]
+Description=Execute Python scripts from encrypted partition
+After=cryptsetup.target
+Requires=cryptsetup.target
+
+[Service]
+Type=simple
+User=raspi
+ExecStartPre=/bin/sleep 5
+ExecStart=/usr/local/bin/start-python-scripts.sh
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
