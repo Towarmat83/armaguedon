@@ -78,7 +78,7 @@ Mettre en commentaire la ligne suivante (située juste en dessous):
 
 #@include common-auth
 
-
+# Suivre automatic_detection.md
 
 
 
