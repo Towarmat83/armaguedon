@@ -15,7 +15,7 @@ Le faire avec l'interface graphique
 https://quentin.demouliere.eu/sysadmin/2024/12/04/luks-yubi.html
 
 ```bash
-sudo apt install yubikey-luks yubikey-personalization pcscd yubikey-manager vim libpam-u2f -y
+sudo apt -y install yubikey-luks yubikey-personalization pcscd yubikey-manager vim libpam-u2f wget gnupg2 gnupg-agent dirmngr cryptsetup scdaemon
 ```
 
 Remplacer le ykluks-keyscript dans `/usr/share/yubikey-luks/ykluks-keyscript`

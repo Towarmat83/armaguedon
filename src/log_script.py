@@ -1,43 +1,43 @@
+import os
 import gnupg
 import time
-import os
 
-# Récupérer le dossier où se trouve le script
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# Chemins relatifs aux fichiers
-KEY_FILE = os.path.join(BASE_DIR, "armaguedon_pub.asc")
-OUTPUT_FILE = os.path.join(BASE_DIR, "logs.txt")
-
-# Vérifier si la clé publique existe
-if not os.path.exists(KEY_FILE):
-    print(f"Erreur : Le fichier de clé publique '{KEY_FILE}' est introuvable.")
-    exit(1)
+# Résoudre ~ en chemin absolu
+gnupghome = os.path.expanduser('~/.gnupg')
 
 # Initialisation de GPG
-gpg = gnupg.GPG()
+gpg = gnupg.GPG(gnupghome=gnupghome)
 
-# Lire la clé publique depuis le fichier
+# Charger la clé publique
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+KEY_FILE = os.path.join(BASE_DIR, "armaguedon_pub.asc")
+
 with open(KEY_FILE, "r") as key_file:
     key_data = key_file.read()
 
-# Extraire l'identifiant de la clé (UID) pour l'utiliser comme destinataire
-# On suppose que l'UID est "BE-Armaguedon"
-recipient = "BE-Armaguedon"
+import_result = gpg.import_keys(key_data)
 
-# Boucle pour générer un timestamp toutes les 5 secondes et le chiffrer
+# Lister les clés publiques
+keys = gpg.list_keys()
+
+# Si des clés sont présentes, récupérer le fingerprint de la première clé
+if keys:
+    recipient = keys[0]['fingerprint']
+else:
+    print("Aucune clé trouvée.")
+
 while True:
-    timestamp = str(int(time.time()))  # Génère un timestamp Unix
+    # Utilisation du même format de timestamp que le deuxième script
+    timestamp = f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] Log message"
     print(f"🕒 Timestamp généré : {timestamp}")
 
-    # Chiffrement avec la clé publique
-    encrypted_data = gpg.encrypt(timestamp, recipients=[recipient], always_trust=True)
+    encrypted_data = gpg.encrypt(timestamp, recipient, always_trust=True)
 
     if not encrypted_data.ok:
         print(f"❌ Erreur lors du chiffrement : {encrypted_data.stderr}")
     else:
-        with open(OUTPUT_FILE, "a", encoding="utf-8") as f:
-            f.write(str(encrypted_data) + "\n")  # Utiliser str() pour convertir en chaîne
-        print(f"🔐 Timestamp chiffré et enregistré dans {OUTPUT_FILE}")
+        with open("logs.txt", "a", encoding="utf-8") as f:
+            f.write(str(encrypted_data) + "\n")
+        print("🔐 Timestamp chiffré et enregistré")
 
-    time.sleep(5)  # Attente de 5 secondes avant la prochaine itération
+    time.sleep(1)

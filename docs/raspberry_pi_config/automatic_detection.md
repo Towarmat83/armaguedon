@@ -2,9 +2,10 @@
 
 Ajouter les documents dans la partition chiffrée depuis le PC OPS.
 
-Installer ce package python:
+Installer ces packages python:
 ```bash
 sudo pip3 install RPi.GPIO --break-system-packages
+sudo pip3 install python-gnupg
 ```
 
 Création du script:
