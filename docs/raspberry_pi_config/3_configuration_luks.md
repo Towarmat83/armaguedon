@@ -118,3 +118,5 @@ sudo update-initramfs -u
 # Logs
 cat /tmp/luks-mount-service.log
 ```
+
+### Vous venez de mettre en place deux services qui s'exécuteront dès la mise sous tension de la Raspberry Pi. 

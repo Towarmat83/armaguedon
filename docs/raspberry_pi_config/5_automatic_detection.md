@@ -39,3 +39,5 @@ sudo systemctl start python-scripts.service
 ```bash
 sudo update-initramfs -u
 ```
+
+### Vous venez de mettre en place le service qui va activer dès la mise sous tension de la Raspberry Pi le système de détection.

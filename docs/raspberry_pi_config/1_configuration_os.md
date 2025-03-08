@@ -1,4 +1,4 @@
-# Configuration OS
+# Configuration OS Raspberry Pi 4 Model B
 
 ## Prérequis
 
@@ -25,5 +25,5 @@
 
 Cette partie peut prendre quelques minutes.
 
-### Votre microSD contient désormais un OS Debian.
+### Votre microSD contient désormais un OS Debian (bootfs + rootfs)
 

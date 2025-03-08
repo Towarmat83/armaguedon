@@ -1,4 +1,4 @@
-# Login Authentication for Raspberry Pi 4 Model B 
+# Authentification du Login pour Raspberry Pi 4 Model B 
 
 ## Prérequis
 
@@ -9,7 +9,7 @@
 ## Étapes de mise en place
 
 
-### Seul l'accès via micro-HDMI est activé sur la Raspberry Pi, ce document vous permet de configurer correctement l'accès au terminal.
+### Seul l'accès via micro-HDMI doit être activé sur la Raspberry Pi, ce document vous permet de configurer correctement l'accès au terminal.
 
 1. Retirer l'interface graphique et les différents TTY (TeleTYpewriter)
 
@@ -95,7 +95,6 @@ sudo reboot
 
 ### Dans notre cas précis, l'authentification via Yubikey est activée, ce qui permet de se connecter sans mot de passe et uniquement en touchant la YubiKey. 
 
-# Suivre automatic_detection.md
 
 
 
