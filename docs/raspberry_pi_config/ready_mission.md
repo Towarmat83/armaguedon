@@ -1,24 +1,17 @@
-## Install scdaemon
-```bash
-sudo apt -y install \
-  wget gnupg2 gnupg-agent dirmngr \
-  cryptsetup scdaemon pcscd \
-  yubikey-personalization yubikey-manager
-```
+# Mise en place de la mission
 
-## Config Yubikey
+## Prérequis
 
-```bash
-# Accès à la Yubikey via CLI
-gpg --edit-card
+* [Configuration OS](1_configuration_os.md)
+* [Configuration basique Yubikey](2_yubikey_basic_configuration.md)
+* [Configuration LUKS](3_configuration_luks.md)
+* [Configuration du login](4_login_authentication.md)
+* [Configuration Service Détection / Cas critique](/docs/raspberry_pi_config/5_automatic_detection.md)
 
-# Changer le PIN et PUK
-admin
-passwd
 
-# PIN par défaut: 123456
-# PUK: 12345678
-```
+## Étapes de mise en place
+
+### Votre Raspberry Pi est maintenant équipée, voici les étapes à suivre pour configurer correctement les configurations système à votre code métier.
 
 ## Create GPG Keys
 
