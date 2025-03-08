@@ -1,6 +1,15 @@
 # Mise en place du système automatique pour la détection
 
-Ajouter les documents dans la partition chiffrée depuis le PC OPS.
+## Prérequis
+
+* [Configuration OS](1_configuration_os.md)
+* [Configuration basique Yubikey](2_yubikey_basic_configuration.md)
+* [Configuration LUKS](3_configuration_luks.md)
+* [Configuration du login](4_login_authentication.md)
+
+## Étapes de mise en place
+
+1. Ajouter les documents dans la partition chiffrée depuis le PC OPS.
 
 Installer ces packages python:
 ```bash
@@ -26,7 +35,7 @@ sudo systemctl enable python-scripts.service
 sudo systemctl start python-scripts.service
 ```
 
-# Pour mettre à jour le boot
+2. Pour mettre à jour le boot
 ```bash
 sudo update-initramfs -u
 ```

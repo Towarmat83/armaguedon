@@ -1,5 +1,14 @@
 # Login Authentication for Raspberry Pi 4 Model B 
 
+## Prérequis
+
+* [Configuration OS](1_configuration_os.md)
+* [Configuration basique Yubikey](2_yubikey_basic_configuration.md)
+* [Configuration LUKS](3_configuration_luks.md)
+
+## Étapes de mise en place
+
+
 ### Seul l'accès via micro-HDMI est activé sur la Raspberry Pi, ce document vous permet de configurer correctement l'accès au terminal.
 
 1. Retirer l'interface graphique et les différents TTY (TeleTYpewriter)
@@ -10,6 +19,7 @@ sudo systemctl stop lightdm
 
 sudo nano /etc/systemd/logind.conf
 
+# Modifier ces deux lignes
 NAutoVTs=1
 ReserveVT=1
 
@@ -55,12 +65,10 @@ sudo reboot
 
 ### Dans cette configuration, dès la mise sous tension de la Raspberry Pi, l'interface tty1 sera automatiquement configurée en mode CLI et demandant le mot de passe de l'utilisateur 'username' pour acceder au terminal.
 
-### Dans notre cas précis, l'authentification via Yubikey est activée, ce qui permet de se connecter sans mot de passe et uniquement en touchant la YubiKey. 
 
+3. Mettre en place l'authentification via Yubikey
 
-3. Mettre en place l'auth via Yubi
-
-Suivre ce tuto: https://sysadmin102.com/2023/07/enable-2-factor-authentication-2fa-or-passwordless-on-kali-linux-with-the-yubikey/
+[Tutoriel utile](https://sysadmin102.com/2023/07/enable-2-factor-authentication-2fa-or-passwordless-on-kali-linux-with-the-yubikey/)
 
 Modifier ce fichier:
 
@@ -76,7 +84,16 @@ auth required pam_u2f.so cue [cue_prompt="Tap the YubiKey to authenticate"]
 
 Mettre en commentaire la ligne suivante (située juste en dessous): 
 
+```bash
 #@include common-auth
+```
+
+Redémarrer la Raspberry Pi pour tester la fonctionnalité:
+```bash
+sudo reboot
+```
+
+### Dans notre cas précis, l'authentification via Yubikey est activée, ce qui permet de se connecter sans mot de passe et uniquement en touchant la YubiKey. 
 
 # Suivre automatic_detection.md
 
