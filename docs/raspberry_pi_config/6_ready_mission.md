@@ -95,73 +95,41 @@ sudo udevadm trigger
 # Création d'un crontab
 sudo crontab -e
 
+# Pour Ethernet
 # Ajout de cette ligne à la fin du fichier
 @reboot /sbin/ip link set dev eth0 down
-
-# Modification du fichier cmdline.txt
-sudo vim /boot/firmware/cmdline.txt
-
-# Ajout de cela collé à la fin 
-... video=HDMI-A-1:d video=HDMI-A-2:d
 ```
 
-5. Désactivation du port USB dès que la Yubikey est débranchée. 
-
-* Reconnaissance du Bus utilisé
-```bash
-lsusb
-# Résultat possible
-# Bus 001 Device 004: ID 1050:0407 Yubico Yubikey 4
-```
-
-* Reconnaissance plus poussée
-```bash
-# Cette commande permet de contrôler tous le traffic pour les `usb`
-sudo udevadm monitor --subsystem-match=usb --property
-
-# Vérifier que ACTION = remove
-# Vérifier que le PRODUCT correspond bien à 1050/407/XXX
-```
-
-* Création d'un [script sh](./conf/disable-usb-port.sh)
-```bash
-sudo vim /usr/local/bin/disable-usb-port.sh
-```
-
-* Rendre exécutable le script
-```bash
-sudo chmod +x /usr/local/bin/disable-usb-port.sh
-```
-
-* Création d'un [service](./conf/99-yubikey-remove.rules)
-```bash
-sudo vim /etc/udev/rules.d/99-yubikey-remove.rules
-```
-* Chargement de la règle
-```bash
-sudo udevadm control --reload-rules
-sudo udevadm trigger
-```
-* Rendre persistant cette étape à chaque redémarrage
-```bash
-# Ajout dans le crontab
-sudo crontab -e
-
-# Ajout de cette ligne à la fin du fichier
-@reboot /usr/local/bin/disable-usb-port.sh
-```
-
-REMOVE HISTORY + LOGS
-
-6. Désactivation du SSH pour limiter l'accès uniquement au TTY1.
+5. Désactivation du SSH pour limiter l'accès uniquement au TTY1.
 ```bash
 sudo systemctl disable ssh
 sudo systemctl stop ssh
 ```
 
-7. Redémarrage complet pour tester
+6. Depuis l'interface micro-HDMI, supprimer tous les logs et traces de configuration
 ```bash
-sudo reboot
+# journalctl
+sudo journalctl --rotate
+sudo journalctl --vacuum-time=1s
+sudo rm -rf /var/log/journal/*
+
+# /var/log
+sudo find /var/log -type f -exec shred -v -n 5 -z {} \; -exec rm {} \;
+
+# bash histroy
+shred -v -n 5 -z ~/.bash_history
+rm ~/.bash_history
+
+history -c
+```
+
+7. Depuis le poste de travail, désactiver les ports micro-HDMI
+```bash
+# Modification du fichier cmdline.txt
+sudo vim /boot/firmware/cmdline.txt
+
+# Ajout de cela collé à la fin 
+... video=HDMI-A-1:d video=HDMI-A-2:d
 ```
 
 ### L'accès en SSH et par microHDMI sont désormais indisponibles.
