@@ -2,12 +2,14 @@
 
 ## Prérequis
 
+* Poste de travail
 * Carte MicroSD (minimum 16Go de stockage)
 * Raspberry Pi 4 Model B 4Go RAM au minimum
+* Adaptateur microSD
 
 ## Étapes de mise en place
 
-### Depuis votre PC, installer [Imager](https://www.raspberrypi.com/software/).
+### Depuis votre poste de travail, installer [Imager](https://www.raspberrypi.com/software/).
 
 1. Sélectionner le modèle de Raspberry Pi
 2. Sélectionner le système d'exploitation : Raspberry Pi OS (64-bits)
@@ -19,7 +21,7 @@
 
 ![Imager2](./assets/imager_2.png)
 
-**Important :** Ne pas oublier de configurer l'accès SSH pour simplifer les futures configurations. 
+**Important :** Dans l'onglet `Services`, ne pas oublier de configurer l'accès SSH par mot de passe pour simplifer les futures configurations. 
 
 5. Enregistrer les modifications
 
@@ -27,3 +29,4 @@ Cette partie peut prendre quelques minutes.
 
 ### Votre microSD contient désormais un OS Debian (bootfs + rootfs)
 
+[Continuer la configuration](./2_yubikey_basic_configuration.md)

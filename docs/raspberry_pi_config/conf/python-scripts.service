@@ -5,7 +5,7 @@ Requires=cryptsetup.target
 
 [Service]
 Type=simple
-User=raspi
+User=<USER>
 ExecStartPre=/bin/sleep 5
 ExecStart=/usr/local/bin/start-python-scripts.sh
 Restart=on-failure

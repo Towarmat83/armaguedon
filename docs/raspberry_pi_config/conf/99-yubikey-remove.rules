@@ -1,1 +1,2 @@
+ACTION=="remove", SUBSYSTEM=="usb", ENV{PRODUCT}=="1050/407/*", RUN+="/usr/local/bin/start-mission-script.sh"
 ACTION=="remove", SUBSYSTEM=="usb", ENV{PRODUCT}=="1050/407/*", RUN+="/usr/local/bin/disable-usb-port.sh"

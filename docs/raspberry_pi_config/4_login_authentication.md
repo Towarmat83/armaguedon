@@ -5,11 +5,13 @@
 * [Configuration OS](1_configuration_os.md)
 * [Configuration basique Yubikey](2_yubikey_basic_configuration.md)
 * [Configuration LUKS](3_configuration_luks.md)
+* Cable microHDMI
+* Clavier
 
 ## Étapes de mise en place
 
 
-### Seul l'accès via micro-HDMI doit être activé sur la Raspberry Pi, ce document vous permet de configurer correctement l'accès au terminal.
+### Seul l'accès via TTY1 doit être activé sur la Raspberry Pi, ce document vous permet de configurer correctement l'accès au terminal.
 
 1. Retirer l'interface graphique et les différents TTY (TeleTYpewriter)
 
@@ -32,9 +34,10 @@ sudo systemctl set-default multi-user.target
 sudo reboot
 ```
 
-Le tty2 à 7 devrait être indisponible.
+Brancher votre cable mircoHDMI et votre clavier, l'autologin de la raspberry Pi devrait directement vous connecter sans demander de mot de passe, la session devrait etre ouverte.
+Les tty2 à 7 devraient être indisponibles. (ATL + F2, etc...)
 
-2. Configurer l'interface tty1 en mode CLI uniquement
+2. Vérifier que l'interface tty1 esy en mode CLI 
 
 Cela permet d'avoir une seule et unique console, sans interface graphique, rendant donc plus simple à protéger et à contrôler.
 
@@ -55,7 +58,7 @@ ExecStart=-/sbin/agetty -o '-p -- username' --noclear --skip-login -  %I $TERM
 # Remplacer le nom de l'utilisateur par celui que vous souhaitez
 ```
 
-Ce fichier permet de configurer l'interface tty1 en mode CLI uniquement
+Ce fichier permet de configurer l'interface tty1 en mode CLI uniquement et de demander le mot de passe sans demander le login.
 
 ```bash
 # Recharger la configuration et rédemarrer la Raspberry Pi
@@ -70,13 +73,32 @@ sudo reboot
 
 [Tutoriel utile](https://sysadmin102.com/2023/07/enable-2-factor-authentication-2fa-or-passwordless-on-kali-linux-with-the-yubikey/)
 
+Créer ce dossier sur la Raspberry Pi
+```bash
+mkdir -p ~/.config/Yubico
+```
+
+Associer la Yubikey
+```bash
+pamu2fcfg > ~/.config/Yubico/u2f_keys
+# La Yubikey clignote, veuillez la toucher.
+```
+
+Associer la seconde Yubikey
+```bash
+pamu2fcfg -n >> ~/.config/Yubico/u2f_keys
+# La Yubikey clignote, veuillez la toucher.
+```
+
+
+
 Modifier ce fichier:
 
 ```bash
 sudo vim /etc/pam.d/login 
 ```
 
-Ajouter cette ligne:
+Ajouter cette ligne à la ligne 55.
 
 ```bash
 auth required pam_u2f.so cue [cue_prompt="Tap the YubiKey to authenticate"]
@@ -96,9 +118,7 @@ sudo reboot
 ### Dans notre cas précis, l'authentification via Yubikey est activée, ce qui permet de se connecter sans mot de passe et uniquement en touchant la YubiKey. 
 
 
-
-
-
+[Continuer la configuration](./5_automatic_detection.md)
 
 
 

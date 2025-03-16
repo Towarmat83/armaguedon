@@ -13,13 +13,13 @@
 
 ## Étapes de mise en place
 
-### Création de la partition LUKS
+### Création de la partition LUKS depuis le poste de travail
 
 1. Allouer du stockage à rootfs.
 
 **Conseil :** Utiliser l'interface graphique pour le faire.
 
-2. Créer une partition LUKS
+2. Créer une partition LUKS (nommée dans la suite du tuto `cryptsetup`)
 
 Pour l'utilisation demandée dans le cadre de notre BE, une partition chiffrée de 20Mo suffit.
 
@@ -27,7 +27,7 @@ Pour l'utilisation demandée dans le cadre de notre BE, une partition chiffrée 
 
 ### Mise sous tension de la Raspberry Pi
 
-3. Extraire la microSD du PC et démarrer la Raspberry Pi avec.
+3. Extraire la microSD du poste de travail et démarrer la Raspberry Pi avec.
 
 Le premier démarrage peut durer quelques minutes.
 
@@ -35,13 +35,17 @@ Le premier démarrage peut durer quelques minutes.
 
 5. Renseigner le WIFI pour communiquer en SSH avec la Raspberry Pi.
 
+6. La partie graphique est finiee, vous pouvez débrancher souris, clavier et cable microHDMI.
+
 ### Lier la partition à la Yubikey.
 
 [Tutoriel utile](https://quentin.demouliere.eu/sysadmin/2024/12/04/luks-yubi.html)
 
 **Conseil :** Cette partie sera beaucoup plus agréable à réaliser en SSH pour pouvoir copier/coller depuis ce Github.
 
-1. Installer les dépendances nécessaires au projet
+0. Connecter vous en SSH à votre Raspebrry Pi
+
+1. Installer les dépendances nécessaires au projet sur la Raspberry Pi
 ```bash
 sudo apt update && sudo apt upgrade
 ```
@@ -56,8 +60,8 @@ Le fichier `/usr/share/yubikey-luks/ykluks-keyscript` généré par le paquet `y
 
 
 ```bash
-# Transférer un fichier depuis votre PC vers la Raspberry Pi
-scp ./docs/raspberry_pi_config/ykluks-keyscript raspi@IP:~/
+# Transférer un fichier depuis votre poste de travail vers la Raspberry Pi
+scp ./docs/raspberry_pi_config/conf/ykluks-keyscript raspi@IP:~/
 
 # Renomage du fichier déprécié
 sudo mv /usr/share/yubikey-luks/ykluks-keyscript /usr/share/yubikey-luks/ykluks-keyscript.old
@@ -66,13 +70,48 @@ sudo mv /usr/share/yubikey-luks/ykluks-keyscript /usr/share/yubikey-luks/ykluks-
 sudo mv ~/ykluks-keyscript /usr/share/yubikey-luks/
 ```
 
-3. Allouer un slot de la Yubikey à un challenge-response `ykpersonalize -2 -ochal-resp -ochal-hmac -ohmac-lt64 -oserial-api-visible`
+3. Allouer un slot de la Yubikey à un challenge-response 
+```bash
+ykpersonalize -2 -ochal-resp -ochal-hmac -ohmac-lt64 -oserial-api-visible
+```
 
 Lister les disques `lsblk`
 
 Avoir des infos sur le disque chiffré `sudo cryptsetup luksDump /dev/mmcblk0p3`
 
 Enroller le Slot Luks et le Slot Yubi `sudo yubikey-luks-enroll -d /dev/mmcblk0p3 -s 1`
+
+**Warning :** Souvenez vous bien du challenge password ! (Pour la suite du tutoriel, le challenge response sera `luks_challenge`)
+
+# Configurer les fichiers suivants:
+
+```bash
+sudo vim /etc/systemd/system/luks-mount.service
+sudo vim /usr/local/bin/luks-mount-service.sh
+
+sudo chmod +x /usr/local/bin/luks-mount-service.sh
+# Activer le service
+sudo ln -s /etc/systemd/system/luks-mount.service /etc/systemd/system/multi-user.target.wants/
+
+sudo vim /usr/local/bin/auto-yubikey-luks.sh
+sudo chmod +x /usr/local/bin/auto-yubikey-luks.sh
+
+# Modifier <USER>:<USER> par votre user configuré lors du Imager.
+sudo vim /etc/systemd/system/yubikey-luks-cryptroot.service
+sudo systemctl enable yubikey-luks-cryptroot.service
+
+# Pour mettre à jour le boot
+sudo update-initramfs -u
+
+# Logs
+cat /tmp/luks-mount-service.log
+```
+
+### Vous venez de mettre en place deux services qui s'exécuteront dès la mise sous tension de la Raspberry Pi. 
+
+[Continuer la configuration](./4_login_authentication.md)
+
+### Commandes utiles pour débugger
 
 Pour monter la partition manuellement:
 ```bash
@@ -95,28 +134,3 @@ Pour faire disparaitre cryptroot de `lsblk`:
 ```bash
 sudo dmsetup remove cryptroot
 ``` 
-
-# Configurer les fichiers suivants:
-
-```bash
-sudo vim /etc/systemd/system/luks-mount.service
-sudo vim /usr/local/bin/luks-mount-service.sh
-
-sudo chmod +x /usr/local/bin/luks-mount-service.sh
-# Activer le service
-sudo ln -s /etc/systemd/system/luks-mount.service /etc/systemd/system/multi-user.target.wants/
-
-sudo vim /usr/local/bin/auto-yubikey-luks.sh
-sudo chmod +x /usr/local/bin/auto-yubikey-luks.sh
-
-sudo vim /etc/systemd/system/yubikey-luks-cryptroot.service
-sudo systemctl enable yubikey-luks-cryptroot.service
-
-# Pour mettre à jour le boot
-sudo update-initramfs -u
-
-# Logs
-cat /tmp/luks-mount-service.log
-```
-
-### Vous venez de mettre en place deux services qui s'exécuteront dès la mise sous tension de la Raspberry Pi. 

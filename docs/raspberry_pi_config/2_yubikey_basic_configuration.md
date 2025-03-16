@@ -3,10 +3,11 @@
 ## Prérequis
 
 * Yubikey
+* Poste de travail
 
 ## Étapes de mise en place
 
-1. Installation des paquets de gestion
+1. Installation des paquets de gestions sur votre poste de travail
 
 ```bash
 sudo apt -y install \
@@ -40,3 +41,6 @@ passwd
 **Conseil :** Vous pouvez aussi configurer ces informations par défaut directement depuis l'interface graphique Yubico Authenticator dans l'onglet `Certificats`. [Lien de téléchargement](https://www.yubico.com/products/yubico-authenticator/)
 
 ![Yubico_Authenticator](./assets/yubico_authenticator.png)
+
+
+[Continuer la configuration](./3_configuration_luks.md)

@@ -9,12 +9,12 @@
 
 ## Étapes de mise en place
 
-1. Ajouter les documents dans la partition chiffrée depuis le PC OPS.
+1. Ajouter [led.py](../../src/led.py) dans la partition chiffrée depuis le PC OPS.
 
-Installer ces packages python:
+Installer ces packages python sur la Raspberry Pi:
 ```bash
 sudo pip3 install RPi.GPIO --break-system-packages
-sudo pip3 install python-gnupg
+sudo pip3 install python-gnupg --break-system-packages
 ```
 
 Création du script:
@@ -26,6 +26,7 @@ sudo chmod +x /usr/local/bin/start-python-scripts.sh
 Création du service:
 ```bash
 sudo vim /etc/systemd/system/python-scripts.service
+# Modifier le <USER>
 ```
 
 Activation + démarrage du service:
@@ -40,6 +41,9 @@ sudo systemctl start python-scripts.service
 sudo update-initramfs -u
 ```
 
-### Vous venez de mettre en place le service qui va activer dès la mise sous tension de la Raspberry Pi le système de détection.
+### Vous venez de mettre en place le service qui va activer dès la mise sous tension de la Raspberry Pi le système de détection de lumière.
 
 ## Votre Raspberry Pi est désormais prête pour la mise en mission
+
+
+[Continuer la configuration](./6_ready_mission.md)
