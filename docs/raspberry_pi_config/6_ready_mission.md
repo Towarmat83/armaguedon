@@ -100,7 +100,7 @@ sudo crontab -e
 @reboot /sbin/ip link set dev eth0 down
 ```
 
-5. Désactivation du SSH pour limiter l'accès uniquement au TTY1.
+5. Désactivation du SSH pour limiter l'accès uniquement au TTY1 depuis écran.
 ```bash
 sudo systemctl disable ssh
 sudo systemctl stop ssh
