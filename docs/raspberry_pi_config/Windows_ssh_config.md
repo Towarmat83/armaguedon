@@ -10,4 +10,4 @@ Dans les proprietées double click sur ipv4 :
 
 ![coucou](./assets/ssh_config3.png)
 
-mettre l'ip sous le meme reseau que la rasp
+Mettre l'ip sous le meme reseau que la rasp
