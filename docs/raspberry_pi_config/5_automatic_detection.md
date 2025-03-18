@@ -41,6 +41,9 @@ sudo systemctl start python-scripts.service
 sudo update-initramfs -u
 ```
 
+3. [Mise en place physique du système de détection](../raspberry_pi_config/conf/Technical_documentation_detection.pdf)
+
+
 ### Vous venez de mettre en place le service qui va activer dès la mise sous tension de la Raspberry Pi le système de détection de lumière.
 
 ## Votre Raspberry Pi est désormais prête pour la mise en mission
