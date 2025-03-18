@@ -43,7 +43,7 @@ Le premier démarrage peut durer quelques minutes.
 
 **Conseil :** Cette partie sera beaucoup plus agréable à réaliser en SSH pour pouvoir copier/coller depuis ce Github.
 
-0. Connecter vous en SSH à votre Raspebrry Pi [tutorial](./Windows_ssh_config.md)
+0. Connecter vous en SSH à votre Raspebrry Pi [Tutorial](./Windows_ssh_config.md)
 1. Installer les dépendances nécessaires au projet sur la Raspberry Pi
 ```bash
 sudo apt update && sudo apt upgrade
