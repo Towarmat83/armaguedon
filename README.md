@@ -26,6 +26,19 @@ Pour vous l'illustrer, notre code métier correspond à un timestamps s'écrivan
 |-- detect_light_script.py
 ```
 
-7. 
+# Utiliser notre solution :
 
+1. Disposer la carte microSD dans la Raspberry Pi. 
+2. Disposer la Raspberry Pi dans la boite en impression 3D. 
+3. Disposer la boite en impression 3D sur le drone. 
+4. Brancher la Yubikey au port USB disponible.
+5. Alimenter la Raspberry Pi.
+6. Attendre que la Yubikey clignote vert (attendre une trentaine de seconde)
+7. Extraire la Yubikey.
 
+La session s'est dévérouillée et le code métier s'éxécute. 
+Vous pouvez utiliser votre drône. 
+
+8. Récupérer le drône, débrancher l'alimentation du drone. 
+9. Extraire la carte microSD de la Raspberry Pi. 
+10. Analyser les données sur le poste de travail.
