@@ -19,4 +19,13 @@ Ce sixième point vous explique comment configurer correctement votre code méti
 
 Pour vous l'illustrer, notre code métier correspond à un timestamps s'écrivant toutes les secondes de manière sécurisée dans un fichier situé dans la partition LUKS. 
 
+### Arborescence de la partition LUKS
+```bash
+|-- log_script.py
+|-- armaguedon_pub.asc
+|-- detect_light_script.py
+```
+
 7. [Lancement de la mission](/docs/raspberry_pi_config/7_launch_mission.md)
+
+

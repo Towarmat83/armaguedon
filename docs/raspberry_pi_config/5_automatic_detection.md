@@ -9,7 +9,7 @@
 
 ## Étapes de mise en place
 
-1. Ajouter [led.py](../../src/led.py) dans la partition chiffrée depuis le PC OPS.
+1. Ajouter [detect_light_script.py](../../src/detect_light_script.py) dans la partition chiffrée depuis le PC OPS.
 
 Installer ces packages python sur la Raspberry Pi:
 ```bash

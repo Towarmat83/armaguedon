@@ -15,7 +15,8 @@
 
 Pour la réalisation de ce POC, notre code métier correspond à un timestamps s'écrivant toutes les secondes de manière sécurisée dans un fichier situé dans la partition LUKS. 
 
-Le code métier correspond à [`log_script.py`](../../src/log_script.py).
+Le code métier correspond à [`log_script.py`](../../src/log_script.py). 
+Pour la réalisation de notre POC, importer ce code métier à la racine de la partition LUKS.  
 
 Toutes les secondes, ce programme va écrire chiffré le timestamps dans le fichier `logs.txt`.
 Pour assurer une sécurité optimale, une clé asymétrique est utilisée et c'est la clé publique qui est utilisée pour chiffrer la donnée. 
@@ -47,10 +48,13 @@ gpg --list-secret-keys
 
 ```bash
 # Exporter la clé sur le PC
-gpg --export --armor <ID_DE_TA_CLÉ> > public_key.asc
+gpg --export --armor <ID_DE_TA_CLÉ> > armaguedon_pub.asc
 
-# Transférer votre clé publique dans votre partition sécurisée.
+# Transférer votre clé publique dans votre partition sécurisée. 
 ```
+
+**Warning :** Pour notre POC, la clé publique doit être située au même niveau que le code métier (racine de la partition LUKS).
+
 
 3. Lancement du code métier au lorsque la Yubikey est débranchée. (cela sous entend que la session est dévérouillée)
 
@@ -135,3 +139,10 @@ sudo vim /boot/firmware/cmdline.txt
 ### L'accès en SSH et par microHDMI sont désormais indisponibles.
 
 ### Vous êtes prêt à utiliser notre POC. 
+
+### Arborescence de la partition LUKS
+```bash
+|-- log_script.py
+|-- armaguedon_pub.asc
+|-- detect_light_script.py
+```

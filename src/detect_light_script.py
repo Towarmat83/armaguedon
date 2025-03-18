@@ -16,7 +16,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 LOG_SCRIPT = os.path.join(BASE_DIR, "log_script.py")
 LOG_FILE = os.path.join(BASE_DIR, "logs.txt")
 PUBLIC_KEY_FILE = os.path.join(BASE_DIR, "armaguedon_pub.asc")
-#YUBIKEY_CHALLENGE_FILE = os.path.join(BASE_DIR, "yubi_expected_response.txt")
 
 
 def stop_log_script():
@@ -59,7 +58,6 @@ def delete_files():
     secure_delete(LOG_FILE)
     secure_delete(LOG_SCRIPT)
     secure_delete(PUBLIC_KEY_FILE)
-    #secure_delete(YUBIKEY_CHALLENGE_FILE)
 
     # # 🔄 Écrasement du disque avec des données aléatoires
     # print("🔄 Écrasement du disque avec des données aléatoires...")
