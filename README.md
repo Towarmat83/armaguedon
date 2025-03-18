@@ -26,6 +26,6 @@ Pour vous l'illustrer, notre code métier correspond à un timestamps s'écrivan
 |-- detect_light_script.py
 ```
 
-7. [Lancement de la mission](/docs/raspberry_pi_config/7_launch_mission.md)
+7. 
 
 
