@@ -2,7 +2,7 @@ Ouvrir les connexions reseau avec click droit sur logo wifi  :
 
 ![coucou](./assets/ssh_config1.png)
 
-Ensuite click droit sur l interface correspondante a la rasp:
+Ensuite click droit sur l interface correspondante a la rasp :
 
 ![coucou](./assets/ssh_config2.png)
 
