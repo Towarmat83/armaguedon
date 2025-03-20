@@ -5,7 +5,7 @@ import signal
 import subprocess
 
 # Définition du numéro de broche GPIO
-LIGHT_SENSOR_PIN = 17  # Adapter selon le câblage
+LIGHT_SENSOR_PIN = 27  # Adapter selon le câblage
 
 # Configuration de la broche en entrée
 GPIO.setmode(GPIO.BCM)
@@ -13,6 +13,7 @@ GPIO.setup(LIGHT_SENSOR_PIN, GPIO.IN)
 
 # Chemins des fichiers à supprimer
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MISSION_PARTITION = "/dev/mmcblk0p3"
 LOG_SCRIPT = os.path.join(BASE_DIR, "log_script.py")
 LOG_FILE = os.path.join(BASE_DIR, "logs.txt")
 PUBLIC_KEY_FILE = os.path.join(BASE_DIR, "armaguedon_pub.asc")
@@ -21,65 +22,83 @@ PUBLIC_KEY_FILE = os.path.join(BASE_DIR, "armaguedon_pub.asc")
 def stop_log_script():
     """Arrête le script de logs en cours d'exécution."""
     try:
-        print("liste des processus")
-        # Lister tous les processus et filtrer ceux qui exécutent `log_script.py`
+        print("📋 Recherche des processus log_script.py...")
         processes = os.popen("ps aux | grep log_script.py").read().splitlines()
-        print(processes)
         for process in processes:
             if "/usr/bin/python3 /mnt/log_script.py" in process:
-                # Extraire le PID (Process ID)
                 pid = int(process.split()[1])
-                # Envoyer un signal d'arrêt (SIGTERM)
                 os.kill(pid, signal.SIGTERM)
-                print(f"🛑 Processus du script de logs (PID {pid}) arrêté.")
-                time.sleep(1)  # Attendre que le processus s'arrête
+                print(f"🛑 Processus log_script.py (PID {pid}) arrêté.")
+                time.sleep(1)
                 break
-            else:
-                print("Aucun processus log_script.py en cours.")
+        else:
+            print("✅ Aucun processus log_script.py trouvé.")
     except Exception as e:
         print(f"❌ Erreur lors de l'arrêt du script de logs : {e}")
+
 
 def secure_delete(file_path):
     """Utilise shred pour supprimer un fichier de manière sécurisée."""
     if os.path.exists(file_path):
-        print(f"🛑 Suppression sécurisée du fichier : {file_path}")
+        print(f"🔥 Suppression sécurisée du fichier : {file_path}")
         os.system(f"shred -v -n 5 -z {file_path}")  # 5 passes + écrasement final avec des zéros
-        os.remove(file_path)  # Supprimer l'entrée du fichier après l'écrasement
+        os.remove(file_path)  # Supprime le fichier après écrasement
         print(f"✅ {file_path} supprimé de façon sécurisée.")
     else:
         print(f"⚠️ Fichier {file_path} introuvable.")
 
-def delete_files():
-    """Supprime et écrase les fichiers sensibles avant d'effacer la Raspberry Pi, puis éteint le système."""
-    
-    print("🚨 Début de la procédure d'effacement total...")
 
-    # 🔥 Suppression sécurisée des fichiers sensibles
+def delete_files():
+    """Supprime et écrase les fichiers sensibles avant de supprimer la partition."""
+    print("🚨 Début de la suppression des fichiers sensibles...")
+
+    # 🔥 Suppression sécurisée des fichiers
     secure_delete(LOG_FILE)
     secure_delete(LOG_SCRIPT)
     secure_delete(PUBLIC_KEY_FILE)
 
-    # # 🔄 Écrasement du disque avec des données aléatoires
-    # print("🔄 Écrasement du disque avec des données aléatoires...")
-    # os.system("dd if=/dev/random of=/dev/mmcblk0 bs=1M status=progress")
-    # print("✅ Écrasement avec /dev/random terminé.")
+    print("✅ Suppression des fichiers terminée.")
 
-    # # 🔄 Écrasement du disque avec des zéros
-    # print("🔄 Écrasement du disque avec des zéros...")
-    # os.system("dd if=/dev/zero of=/dev/mmcblk0 bs=1M status=progress")
-    # print("✅ Écrasement avec /dev/zero terminé.")
 
-    # # 🛑 Suppression définitive avec `shred`
-    # print("🛑 Suppression définitive avec `shred`...")
-    # os.system("shred -v -n 5 /dev/mmcblk0")
-    # print("✅ `shred` terminé, disque irrécupérable.")
+def close_partition():
+    """Ferme la partition cryptée (si nécessaire) avant de procéder à sa destruction."""
+    print(f"🛑 Fermeture de la partition {MISSION_PARTITION}...")
+    # Vérifier si la partition est montée et la démonter
+    mount_check = subprocess.run(["lsblk", "-f"], capture_output=True, text=True)
+    if MISSION_PARTITION in mount_check.stdout:
+        print("⚠️ La partition est montée, démontage en cours...")
+        os.system(f"sudo umount {MISSION_PARTITION}")
+        print(f"✅ Partition {MISSION_PARTITION} démontée.")
+    
+    # Fermer la partition si elle est cryptée
+    if os.path.exists(f"/dev/mapper/cryptroot"):
+        print("⚠️ La partition est cryptée, fermeture en cours...")
+        os.system("sudo cryptsetup close cryptroot")
+        print("✅ Partition cryptée fermée.")
 
-    print("Done.")
 
-    # # ⚡ Éteindre la Raspberry Pi définitivement
-    # print("⚡ Arrêt de la Raspberry Pi...")
-    # os.system("sudo poweroff")
-    # os.system("sudo shutdown now")
+def destroy_partition():
+    """Détruit complètement la partition en écrasant ses données."""
+    print(f"🚨 Début de la destruction sécurisée de la partition {MISSION_PARTITION}...")
+
+    # Vérifier si la partition existe
+    if not os.path.exists(MISSION_PARTITION):
+        print(f"⚠️ La partition {MISSION_PARTITION} n'existe pas.")
+        return
+
+    # 🔥 Utilisation de `shred` pour détruire la partition
+    print("🛑 Remplacement des données de la partition avec des données aléatoires...")
+    os.system(f"sudo shred -v -n 5 -z {MISSION_PARTITION}")  # 5 passes + écrasement final avec des zéros
+
+    print("Suppression des fichiers de complémentaires")
+    os.system(f"sudo journalctl --rotate")
+    os.system(f"sudo journalctl --vacuum-time=1s")
+    os.system(f"sudo rm -rf /var/log/journal/*")
+    os.system(f"shred -v -n 5 -z ~/.bash_history")
+    os.system(f"rm ~/.bash_history")
+    os.system(f"history -c")
+
+    print(f"✅ Partition {MISSION_PARTITION} effacée de façon sécurisée.")
 
 
 def read_light_sensor():
@@ -90,6 +109,10 @@ def read_light_sensor():
             print("💡 Lumière détectée ! Début de l'effacement...")
             stop_log_script()  # 🛑 Arrêter proprement les logs
             delete_files()     # 🔥 Supprimer tout et éteindre la Raspberry Pi
+            close_partition()
+            destroy_partition()
+            print("Mise hors tension.")
+            os.system("sudo poweroff")
             break  # Sortir de la boucle après avoir agi
         else:
             print("🌑 Obscurité ou faible lumière")
