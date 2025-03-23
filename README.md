@@ -5,9 +5,9 @@ Ce Github vous permettra de configurer correctement votre Raspberry Pi.
 ## Étapes de lecture :
 
 1. [Configuration OS](/docs/raspberry_pi_config/1_configuration_os.md)
-2. [Configuration basique de votre Yubikey](2_yubikey_basic_configuration.md)
-3. [Configuration de votre partition LUKS](3_configuration_luks.md)
-4. [Configuration du login lié à votre Yubikey](4_login_authentication.md)
+2. [Configuration basique de votre Yubikey](/docs/raspberry_pi_config/2_yubikey_basic_configuration.md)
+3. [Configuration de votre partition LUKS](/docs/raspberry_pi_config/3_configuration_luks.md)
+4. [Configuration du login lié à votre Yubikey](/docs/raspberry_pi_config/4_login_authentication.md)
 5. [Configuration Service Détection / Cas critique](/docs/raspberry_pi_config/5_automatic_detection.md)
 
 Ces 5 premiers points correspondent à la mise en place de la Raspberry Pi.
