@@ -90,6 +90,9 @@ def destroy_partition():
     print("🛑 Remplacement des données de la partition avec des données aléatoires...")
     os.system(f"sudo shred -v -n 5 -z {MISSION_PARTITION}")  # 5 passes + écrasement final avec des zéros
 
+    print("Destruction des headers LUKS...")
+    os.system("sudo cryptsetup luksErase /dev/mapper/cryptroot")
+
     print("Suppression des fichiers de complémentaires")
     os.system(f"sudo journalctl --rotate")
     os.system(f"sudo journalctl --vacuum-time=1s")

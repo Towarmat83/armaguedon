@@ -61,3 +61,4 @@ En cas de besoin d'analyse ou de récupération de fichiers supprimés, voici qu
 
 Si rm a été utilisé → Récupération possible avec TestDisk, Foremost, PhotoRec.
 Si shred ou wipe ont été utilisés → Très difficile voire impossible sauf s'il y a une copie en RAM ou en cache.
+L'utilisation de `luksErase` permet de retirer les headers de la partition LUKS rendant inexploitable la partition.
